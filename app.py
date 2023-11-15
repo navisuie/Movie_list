@@ -107,11 +107,29 @@ def update_by_title(id):
         traceback.print_exc()
         return jsonify({'error': str(e)}), 400
 
-@app.route('/movie/delete/<id>', methods = ['DELETE'])
+
+@app.route('/movie/deletebyid/<id>', methods = ['DELETE'])
 def delete_article(id):
     movie = Movie.query.get(id)
     if not movie:
         return jsonify({'error': 'there is no movie by this id'}), 404
+    db.session.delete(movie)
+    db.session.commit()
+    movie_dict = {
+        'title': movie.title,
+        'director': movie.director,
+        'imdb_rating': movie.imdb_rating,
+        'summary': movie.summary,
+        'id': movie.id,
+        'pub_date': movie.pub_date
+    }
+    return jsonify(movie_dict)
+
+@app.route('/movie/deletebytitle/<title>', methods = ['DELETE'])
+def delete_article_title(title):
+    movie = Movie.query.filter_by(title = title).first()
+    if not movie:
+        return jsonify({'error': 'there is no movie by this title'}), 404
     db.session.delete(movie)
     db.session.commit()
     movie_dict = {
