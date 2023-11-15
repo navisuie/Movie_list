@@ -77,7 +77,7 @@ def get_by_title(title):
         })
     return jsonify(movie_list)
 
-#update a movie post by title
+#update a movie post by id
 @app.route('/movie/update/<id>', methods = ['PUT'])
 def update_by_title(id):
     try:
@@ -107,7 +107,7 @@ def update_by_title(id):
         traceback.print_exc()
         return jsonify({'error': str(e)}), 400
 
-
+#route to delete by movie id
 @app.route('/movie/deletebyid/<id>', methods = ['DELETE'])
 def delete_article(id):
     movie = Movie.query.get(id)
@@ -125,6 +125,7 @@ def delete_article(id):
     }
     return jsonify(movie_dict)
 
+#route to delete by movie title
 @app.route('/movie/deletebytitle/<title>', methods = ['DELETE'])
 def delete_article_title(title):
     movie = Movie.query.filter_by(title = title).first()
